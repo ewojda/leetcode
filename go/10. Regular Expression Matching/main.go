@@ -4,9 +4,7 @@ func main() {}
 
 func isMatch(target, pattern string) bool {
 	if len(pattern) == 0 && len(target) == 0 {
-		return true
-	} else if len(pattern) == 0 {
-		return false
+		return len(target) == 0
 	}
 	patternChar, patternMod, remainingTokens := nextPatternToken(pattern)
 	for _, targetRemaining := range remainingAfterMatch(target, patternChar, patternMod) {
