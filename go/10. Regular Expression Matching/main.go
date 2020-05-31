@@ -3,15 +3,32 @@ package main
 func main() {}
 
 func isMatch(target, pattern string) bool {
+	memo := map[[2]int]bool{}
+	return isMatch0(target, pattern, memo)
+}
+
+func isMatch0(target, pattern string, memo map[[2]int]bool) bool {
+	if memoResult, ok := memo[[2]int{len(target), len(pattern)}]; ok {
+		return memoResult
+	}
+
 	if len(pattern) == 0 && len(target) == 0 {
-		return len(target) == 0
+		if len(target) == 0 {
+			memo[[2]int{len(target), len(pattern)}] = true
+			return true
+		} else {
+			memo[[2]int{len(target), len(pattern)}] = false
+			return false
+		}
 	}
 	patternChar, patternMod, remainingTokens := nextPatternToken(pattern)
 	for _, targetRemaining := range remainingAfterMatch(target, patternChar, patternMod) {
-		if isMatch(targetRemaining, remainingTokens) {
+		if isMatch0(targetRemaining, remainingTokens, memo) {
+			memo[[2]int{len(target), len(pattern)}] = true
 			return true
 		}
 	}
+	memo[[2]int{len(target), len(pattern)}] = false
 	return false
 }
 
